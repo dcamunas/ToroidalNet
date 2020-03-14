@@ -1,4 +1,5 @@
 /* CONSTANTS */
+#define L       3
 
 #define TRUE    0
 #define FALSE   1
@@ -13,3 +14,9 @@
 #define DATA_SIZE   SIZE*sizeof(double)
 
 #define SEPARATOR   ","
+
+/*Known's Orientation*/
+#define NORTH       0
+#define SOUTH       1
+#define EAST        2
+#define WEST        3
