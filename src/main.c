@@ -9,7 +9,7 @@ FILE *open_file(const char * path, const char *mode);
 int load_data(double *data);
 int check_size(int size, int numbers_n);
 void add_numbers(double *data, int size, int rank);
-void get_knowns(int rank, int *knowns);
+void get_neighbors(int rank, int *neighbors);
 
 int main(int argc, char *argv[])
 {
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     int rank, size, numbers_n, finish;
     double number;
     double *data = malloc(DATA_SIZE);
-    int *knows = malloc(4*sizeof(double));
+    int *neighbors = malloc(4*sizeof(double));
     MPI_Status status;
 
     /* Initialize MPI program */
@@ -48,9 +48,9 @@ int main(int argc, char *argv[])
     {
         MPI_Recv(&number, 1, MPI_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
         
-        get_knowns(rank, knows);
+        get_neighbors(rank, neighbors);
         printf("[X] RANK[%d]: NORTH[%d] | SOUTH[%d] | WEST[%d] | EAST[%d]\n", 
-            rank, knows[NORTH], knows[SOUTH], knows[WEST], knows[EAST]);
+            rank, neighbors[NORTH], neighbors[SOUTH], neighbors[WEST], neighbors[EAST]);
         
     }
 
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 }
 
 /*Get rank's neighbours*/
-void get_knowns(int rank, int *knowns)
+void get_neighbors(int rank, int *neighbors)
 {
     int row = rank/L;
     int column = rank%L;
@@ -69,18 +69,18 @@ void get_knowns(int rank, int *knowns)
     switch (row)
     {
     case 0:
-        knowns[NORTH] = L *(L - 1) + rank;
-        knowns[SOUTH] = rank + L;
+        neighbors[NORTH] = L *(L - 1) + rank;
+        neighbors[SOUTH] = rank + L;
         break;
 
     case L - 1: 
-        knowns[NORTH] = rank - L;
-        knowns[SOUTH] = rank % L;
+        neighbors[NORTH] = rank - L;
+        neighbors[SOUTH] = rank % L;
         break;
 
     default:
-        knowns[NORTH] = rank - L;
-        knowns[SOUTH] = rank + L;
+        neighbors[NORTH] = rank - L;
+        neighbors[SOUTH] = rank + L;
         break;
     }
 
@@ -88,18 +88,18 @@ void get_knowns(int rank, int *knowns)
     switch (column)
     {
     case 0:
-        knowns[WEST] = rank + (L-1);
-        knowns[EAST] = rank + 1;
+        neighbors[WEST] = rank + (L-1);
+        neighbors[EAST] = rank + 1;
         break;
     
     case L - 1:
-        knowns[WEST] = rank - 1;
-        knowns[EAST] = rank - (L - 1); 
+        neighbors[WEST] = rank - 1;
+        neighbors[EAST] = rank - (L - 1); 
         break;
 
     default:
-        knowns[WEST] = rank - 1;
-        knowns[EAST] = rank + 1;
+        neighbors[WEST] = rank - 1;
+        neighbors[EAST] = rank + 1;
         break;
     }
 
