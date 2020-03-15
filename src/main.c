@@ -10,6 +10,7 @@ int load_data(double *data);
 int check_size(int size, int numbers_n);
 void add_numbers(double *data, int size, int rank);
 void get_neighbors(int rank, int *neighbors);
+void calculate_min(int rank, double my_number, int *neighbors);
 
 int main(int argc, char *argv[])
 {
@@ -18,7 +19,7 @@ int main(int argc, char *argv[])
     int rank, size, numbers_n, finish;
     double number;
     double *data = malloc(DATA_SIZE);
-    int *neighbors = malloc(4*sizeof(double));
+    int *neighbors = malloc(NEIGHBORS_N*sizeof(double));
     MPI_Status status;
 
     /* Initialize MPI program */
@@ -47,10 +48,11 @@ int main(int argc, char *argv[])
     if(finish != TRUE)
     {
         MPI_Recv(&number, 1, MPI_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
-        
         get_neighbors(rank, neighbors);
-        printf("[X] RANK[%d]: NORTH[%d] | SOUTH[%d] | WEST[%d] | EAST[%d]\n", 
-            rank, neighbors[NORTH], neighbors[SOUTH], neighbors[WEST], neighbors[EAST]);
+        //printf("[X] RANK[%d] --> Number: %lf\n", rank, number); 
+
+        
+        calculate_min(rank, number, neighbors);
         
     }
 
@@ -58,6 +60,33 @@ int main(int argc, char *argv[])
     MPI_Finalize();
 
     return EXIT_SUCCESS;
+}
+
+
+void calculate_min(int rank, double my_number, int *neighbors)
+{
+    int i;
+    double his_number;
+
+
+    /* Calculate rows */
+    for(i = 1; i < L; i++)
+    {
+        MPI_Send(&my_number,1,MPI_DOUBLE, neighbors[SOUTH], SEND_TAG, MPI_COMM_WORLD);
+        MPI_Recv(&his_number, 1, MPI_DOUBLE, neighbors[NORTH], MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
+        my_number = (his_number > my_number ? my_number : his_number);
+    }
+
+    /* Calculate columns */
+    for(i = 1; i < L; i++)
+    {
+        MPI_Send(&my_number,1,MPI_DOUBLE, neighbors[EAST], SEND_TAG, MPI_COMM_WORLD);
+        MPI_Recv(&his_number, 1, MPI_DOUBLE, neighbors[WEST], MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
+        my_number = (his_number > my_number ? my_number : his_number);
+    }
+    printf("RANK[%d] --> minimo: %lf\n", rank, my_number);
+
+    
 }
 
 /*Get rank's neighbours*/
@@ -114,7 +143,7 @@ void add_numbers(double *data, int size, int rank)
     for (i = 0; i < size; i++)
     {
         number = data[i];
-        MPI_Send(&number, 1, MPI_DOUBLE, i, rank, MPI_COMM_WORLD);
+        MPI_Send(&number, 1, MPI_DOUBLE, i, SEND_TAG, MPI_COMM_WORLD);
     }
 
     free(data);

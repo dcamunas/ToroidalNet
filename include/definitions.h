@@ -1,5 +1,11 @@
 /* CONSTANTS */
-#define L       3
+#define L               3
+#define NEIGHBORS_N     4
+
+#define SEND_TAG             0
+
+/* My definitions MPI data type */
+
 
 #define TRUE    0
 #define FALSE   1
