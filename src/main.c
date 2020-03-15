@@ -6,20 +6,21 @@
 #include <mpi.h>
 
 FILE *open_file(const char * path, const char *mode);
-int load_data(double *data);
+int load_data(long double *data);
 int check_size(int size, int numbers_n);
-void add_numbers(double *data, int size, int rank);
+void add_numbers(long double *data, int size, int rank);
 void get_neighbors(int rank, int *neighbors);
-void calculate_min(int rank, double my_number, int *neighbors);
+long double calculate_min(int rank, long double my_number, int *neighbors);
+void print_min_number(int rank, long double min_number);
 
 int main(int argc, char *argv[])
 {
 
     /*Variables*/
     int rank, size, numbers_n, finish;
-    double number;
-    double *data = malloc(DATA_SIZE);
-    int *neighbors = malloc(NEIGHBORS_N*sizeof(double));
+    long double number, min_number;
+    long double *data = malloc(DATA_SIZE);
+    int *neighbors = malloc(NEIGHBORS_SIZE);
     MPI_Status status;
 
     /* Initialize MPI program */
@@ -30,7 +31,7 @@ int main(int argc, char *argv[])
     /* Get side's value */
     /*const int L = (int)sqrt(size);*/
 
-    if(rank == 0)
+    if(rank == FIRST_RANK)
     {
         /*Get quantity of numbers*/
         numbers_n = load_data(data);
@@ -47,12 +48,14 @@ int main(int argc, char *argv[])
 
     if(finish != TRUE)
     {
-        MPI_Recv(&number, 1, MPI_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
+        MPI_Recv(&number, 1, MPI_LONG_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
         get_neighbors(rank, neighbors);
-        //printf("[X] RANK[%d] --> Number: %lf\n", rank, number); 
-
         
-        calculate_min(rank, number, neighbors);
+        printf("[X] RANK[%d] --> %.2Lf\n", rank, number); 
+    
+        min_number = calculate_min(rank, number, neighbors);
+
+        print_min_number(rank, min_number);
         
     }
 
@@ -63,31 +66,43 @@ int main(int argc, char *argv[])
 }
 
 
-void calculate_min(int rank, double my_number, int *neighbors)
+long double calculate_min(int rank, long double my_number, int *neighbors)
 {
     int i;
-    double his_number;
+    long double his_number;
 
 
     /* Calculate rows */
     for(i = 1; i < L; i++)
     {
-        MPI_Send(&my_number,1,MPI_DOUBLE, neighbors[SOUTH], SEND_TAG, MPI_COMM_WORLD);
-        MPI_Recv(&his_number, 1, MPI_DOUBLE, neighbors[NORTH], MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
+        MPI_Send(&my_number,1,MPI_LONG_DOUBLE, neighbors[SOUTH], SEND_TAG, MPI_COMM_WORLD);
+        MPI_Recv(&his_number, 1, MPI_LONG_DOUBLE, neighbors[NORTH], MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
         my_number = (his_number > my_number ? my_number : his_number);
     }
 
-    /* Calculate columns */
     for(i = 1; i < L; i++)
     {
-        MPI_Send(&my_number,1,MPI_DOUBLE, neighbors[EAST], SEND_TAG, MPI_COMM_WORLD);
-        MPI_Recv(&his_number, 1, MPI_DOUBLE, neighbors[WEST], MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
+        MPI_Send(&my_number,1,MPI_LONG_DOUBLE, neighbors[EAST], SEND_TAG, MPI_COMM_WORLD);
+        MPI_Recv(&his_number, 1, MPI_LONG_DOUBLE, neighbors[WEST], MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
         my_number = (his_number > my_number ? my_number : his_number);
     }
-    printf("RANK[%d] --> minimo: %lf\n", rank, my_number);
 
-    
+    free(neighbors);
+
+    return my_number;
 }
+
+void print_min_number(int rank, long double min_number)
+{
+    if(rank == FIRST_RANK){
+        printf("\n[X] RANK[%d]: The minium value is: %.2Lf\n", rank, min_number);
+    
+    /*End message*/
+    printf("----------------------------------------------------------------------------------------\n");
+    printf("\t\t\t***** PROGRAM FINALIZED *****\n\n");
+    }
+}
+
 
 /*Get rank's neighbours*/
 void get_neighbors(int rank, int *neighbors)
@@ -135,15 +150,15 @@ void get_neighbors(int rank, int *neighbors)
 }
 
 /* Add number to nodes (ranks) */
-void add_numbers(double *data, int size, int rank)
+void add_numbers(long double *data, int size, int rank)
 {
     int i;
-    double number;
+    long double number;
 
     for (i = 0; i < size; i++)
     {
         number = data[i];
-        MPI_Send(&number, 1, MPI_DOUBLE, i, SEND_TAG, MPI_COMM_WORLD);
+        MPI_Send(&number, 1, MPI_LONG_DOUBLE, i, SEND_TAG, MPI_COMM_WORLD);
     }
 
     free(data);
@@ -164,7 +179,7 @@ int check_size(int size, int numbers_n)
 }
 
 /* Load data (numbers) from datos.dat */
-int load_data(double *data)
+int load_data(long double *data)
 {
     
     FILE *file = open_file(DATA_PATH, READ_MOD);
