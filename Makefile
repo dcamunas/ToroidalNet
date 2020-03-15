@@ -9,16 +9,16 @@ LDLIBS := -lm
 CC := mpicc
 RUN := mpirun
 
-all : dirs main
+all : dirs toroidalNet
 
 dirs:
 	mkdir -p $(DIREXE)
 
-main:
-	$(CC) $(DIRSRC)main.c $(CFLAGS) $(LDLIBS) -o $(DIREXE)main
+toridalNet:
+	$(CC) $(DIRSRC)toroidalNet.c $(CFLAGS) $(LDLIBS) -o $(DIREXE)toroidalNet
 
 solution:
-	$(RUN) -n 9 ./$(DIREXE)main 
+	$(RUN) -n 9 ./$(DIREXE)toroidalNet 
 
 clean : 
 	rm -rf *~ core $(DIROBJ) $(DIREXE) $(DIRHEA)*~ $(DIRSRC)*~ 

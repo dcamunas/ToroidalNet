@@ -6,9 +6,6 @@
 
 #define FIRST_RANK      0
 
-/* My definitions MPI data type */
-
-
 #define TRUE    1
 #define FALSE   0
 

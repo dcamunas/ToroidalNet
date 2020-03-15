@@ -49,9 +49,9 @@ int main(int argc, char *argv[])
     if (finish != TRUE)
     {
         MPI_Recv(&number, 1, MPI_LONG_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
-        get_neighbors(rank, neighbors);
-
         printf("[X] RANK[%d] --> %.2Lf\n", rank, number);
+
+        get_neighbors(rank, neighbors);
 
         min_number = calculate_min(rank, number, neighbors);
 
@@ -64,19 +64,6 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
-/* Check toroid's size (nº nodes) */
-int check_size(int size, int numbers_n)
-{
-    int finish = FALSE;
-    if (size != numbers_n)
-    {
-        fprintf(stderr, "[X] PROCESS[0]: Error, quantity of numbers (%d) is diferent at toroid's size (%d | L = %d)\n",
-                numbers_n, size, L);
-        finish = TRUE;
-    }
-
-    return finish;
-}
 
 /* Load data (numbers) from datos.dat */
 int load_data(long double *data)
@@ -105,10 +92,24 @@ FILE *open_file(const char *path, const char *mode)
     FILE *file;
     if ((file = fopen(path, mode)) == NULL)
     {
-        fprintf(stderr, "[X] PROCESS[0]: Error opening file.\n");
+        fprintf(stderr, "[X] RANK[0]: Error opening file.\n");
         exit(EXIT_FAILURE);
     }
     return file;
+}
+
+/* Check toroid's size (nº nodes) */
+int check_size(int size, int numbers_n)
+{
+    int finish = FALSE;
+    if (size != numbers_n)
+    {
+        fprintf(stderr, "[X] RANK[0]: Error, quantity of numbers (%d) is diferent at toroid's size (%d | L = %d)\n",
+                numbers_n, size, L);
+        finish = TRUE;
+    }
+
+    return finish;
 }
 
 /* Add number to nodes (ranks) */
