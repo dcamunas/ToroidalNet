@@ -6,6 +6,7 @@
 
 #define FIRST_RANK      0
 
+/* Constants of condition */
 #define TRUE    1
 #define FALSE   0
 
@@ -21,7 +22,7 @@
 
 #define SEPARATOR   ","
 
-/*Known's Orientation*/
+/*Neigbor's Orientation*/
 #define NORTH       0
 #define SOUTH       1
 #define EAST        2

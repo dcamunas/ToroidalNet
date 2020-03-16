@@ -7,11 +7,12 @@
 
 FILE *open_file(const char *path, const char *mode);
 int load_data(long double *data);
-int check_size(int size, int numbers_n);
-void add_numbers(long double *data, int size, int rank);
-void get_neighbors(int rank, int *neighbors);
-long double calculate_min(int rank, long double my_number, int *neighbors);
-void print_min_number(int rank, long double min_number);
+int check_size(const int size, const int numbers_n);
+void add_numbers(long double *data, const int size);
+void get_neighbors(const int rank, int *neighbors);
+long double calculate_min(const int rank, long double my_number, int *neighbors);
+void print_min_number(const int rank, long double min_number);
+
 
 int main(int argc, char *argv[])
 {
@@ -28,9 +29,6 @@ int main(int argc, char *argv[])
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    /* Get side's value */
-    /*const int L = (int)sqrt(size);*/
-
     if (rank == FIRST_RANK)
     {
         /*Get quantity of numbers*/
@@ -40,7 +38,7 @@ int main(int argc, char *argv[])
 
         if (finish != TRUE)
         {
-            add_numbers(data, size, rank);
+            add_numbers(data, size);
         }
     }
 
@@ -99,7 +97,7 @@ FILE *open_file(const char *path, const char *mode)
 }
 
 /* Check toroid's size (nº nodes) */
-int check_size(int size, int numbers_n)
+int check_size(const int size, const int numbers_n)
 {
     int finish = FALSE;
     if (size != numbers_n)
@@ -113,7 +111,7 @@ int check_size(int size, int numbers_n)
 }
 
 /* Add number to nodes (ranks) */
-void add_numbers(long double *data, int size, int rank)
+void add_numbers(long double *data, const int size)
 {
     int i;
     long double number;
@@ -128,10 +126,11 @@ void add_numbers(long double *data, int size, int rank)
 }
 
 /*Get rank's neighbours*/
-void get_neighbors(int rank, int *neighbors)
+void get_neighbors(const int rank, int *neighbors)
 {
     int row = rank / L;
     int column = rank % L;
+
 
     switch (row)
     {
@@ -171,7 +170,7 @@ void get_neighbors(int rank, int *neighbors)
 }
 
 /*Calculate the minium value*/
-long double calculate_min(int rank, long double my_number, int *neighbors)
+long double calculate_min(const int rank, long double my_number, int *neighbors)
 {
     int i;
     long double his_number;
@@ -195,7 +194,7 @@ long double calculate_min(int rank, long double my_number, int *neighbors)
 }
 
 /*Print the minium value by First Rank (Rank == 0)*/
-void print_min_number(int rank, long double min_number)
+void print_min_number(const int rank, long double min_number)
 {
     if (rank == FIRST_RANK)
     {
@@ -203,6 +202,6 @@ void print_min_number(int rank, long double min_number)
 
         /*End message*/
         printf("----------------------------------------------------------------------------------------\n");
-        printf("\t\t\t***** PROGRAM FINALIZED *****\n\n");
+        printf("\t\t\t***** PROGRAM FINALIZED *****\n\n\n");
     }
 }
