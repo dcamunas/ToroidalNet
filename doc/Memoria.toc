@@ -1,15 +1,5 @@
 \babel@toc {spanish}{}
 \contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{2}{section.1}
-\contentsline {section}{\numberline {2}Cambiando el script}{3}{section.2}
-\contentsline {section}{\numberline {3}Cambiando los parametros de simulaci\IeC {\'o}n de la antena}{4}{section.3}
-\contentsline {section}{\numberline {4}Instalaci\IeC {\'o}n de \LaTeX {} y dependencias de la plantilla}{5}{section.4}
-\contentsline {section}{\numberline {5}Ejemplos de tipograf\IeC {\'\i }a y organizaci\IeC {\'o}n del documento}{5}{section.5}
-\contentsline {subsection}{\numberline {5.1}Subsecciones}{5}{subsection.5.1}
-\contentsline {subsubsection}{\numberline {5.1.1}Subsubsecci\IeC {\'o}n 1}{5}{subsubsection.5.1.1}
-\contentsline {section}{\numberline {6}F\IeC {\'o}rmulas en \LaTeX {}}{5}{section.6}
-\contentsline {section}{\numberline {7}Ejemplo de c\IeC {\'o}digos e im\IeC {\'a}genes}{6}{section.7}
-\contentsline {section}{\numberline {8}Ejemplo de listados}{8}{section.8}
-\contentsline {section}{\numberline {9}Tablas}{9}{section.9}
-\contentsline {section}{\numberline {10}A\IeC {\~n}adir referencias}{9}{section.10}
-\contentsline {section}{\numberline {11}Mejoras y sugerencias}{9}{section.11}
-\contentsline {section}{Referencias}{10}{section.11}
+\contentsline {section}{\numberline {2}Planteamiento de la soluci\IeC {\'o}n}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Tipos de nodos}{3}{subsection.2.1}
+\contentsline {section}{Referencias}{5}{subsection.2.1}

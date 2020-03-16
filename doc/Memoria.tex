@@ -110,11 +110,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%				Principales variables del documento			   %%%%%%%%%
 
-\title{Simulación con la herramienta NS3}							% Titulo
+\title{Práctica 1: Red Toroide e Hipercubo}							% Titulo
 \author{David Camuñas Sánchez}							% Autor
 
 \date{\today}											% Fecha
-\newcommand{\subject}{Redes y Servicios Móviles}						% Asignatura
+\newcommand{\subject}{Diseño de Infraestructuras de Red}						% Asignatura
 \newcommand{\course}{Grado en Ingeniería Informática}	% Curso
 %\newcommand{\course}{Máster Universitario en Ingeniería Informática}	% Curso
 \newcommand{\courseyear}{2019 - 2020} 					% Curso académico
@@ -215,224 +215,62 @@
 
 % Sección: Intruducción
 \section{Introducción}
-El objetivo de esta práctica es realizar una primera toma de contacto con la herramienta de simulación ns3 (\url{https://www.nsnam.org/docs/tutorial/html/}).
+El objetivo de esta primera fase de la práctica es la creación de uno de los tipos de redes de comunicación existente, esta es la \textbf{\textit{red Toroide}} o \textit{de anillo}.
 
-Para ello se va a utilizar un ejemplo de simulación dado, el cual tratará sobre la comunicación entre dos nodos. Y así observar como va cambiando el número de paquetes perdidos, según se va modificando la distancia entre ambos nodos.
+A la hora de dibujar este tipo de red para entender su funcionamiento, se puede mostrar como una matriz. 
 
-El ejemplo de simulación utilizado lo podemos encontrar dentro de la carpeta de ns3 descargada, en el diredctorio: \textit{ns-3.30.1/examples/stats}.
-\\
+Cuya peculiaridad es que son redes cuadradas, de \textit{lado} \textit{\textbf{L}}, donde cada fila o columna de un extremo, conecta con su fila o columna inversa, es decir, los elementos que formarían la última fila de la matriz se conectarían (serían \textit{"vecinos"}) con los elementos de la primera fila de la matriz y asi sucesivamente.
 
+A continuación, se mostrará un ejemplo donde se puede observar la estructura de este tipo de red.
 
+\begin{figure}[h!]
+  \centering
+  \subfigure[Red toroide en 3D]{
+    \includegraphics[width=70mm]{toroide.png}
+  }
+  \subfigure[Topología de una red Toroide]{
+  \includegraphics[width=70mm]{toroide-r.png}
+  
 
-\clearpage
-
-% Aparatado 1
-\section{Cambiando el script}
-En el ejemplo anteriormente explicado se ha realizado la modificación de las distancias entre ambos \textit{nodos} (emisor y receptor), las cuales se utilizarán para llevar a cabo la simulación.
-
-Las distancias a utilizadas son las siguientes:
-[25 50 75 100 125 145 147
-150 152 155 157 160 162 165 167 170 172 175 177 180 185 190 195 200 210 220 230 240 250
-300 350 400 450 500 600 750 1000].
-
-También se ha cambiado el número de iteracciones de cada distancia de 5 a 1.
-
-Tras realizar estos cambios, se ha obtenido como resultado el siguiente gráfico:
-\\
-
-
-\clearpage
-
-%Apartado 2
-\section{Cambiando los parametros de simulación de la antena}
-En este ejercicio se modificarán una serie de atributos de la parte de codigo que corresponde a la antena fisica, en concreto el tipo e variable \textit{\textbf{YansWifiPhyHelper wifiPhy}}, declarada en la linea X del archivo \textit{sim.cc}. 
-
-Para ello se ha utilizado como la web que ns3 \textit{tal}, como recurso a la hora de buscar los atributos a modificar de este objeto.
-
-El objetivo es estudiar el porcentaje de paquetes perdidos según se va aumentando la distancia a la que se encuentran ambos nodos. En este caso, se estudiara para 200 metros, 400 metros y 800 metros.
-
-
-\clearpage
-
-% Sección: Instalación de LaTeX y dependencias de la plantilla
-\section{Instalación de \LaTeX{} y dependencias de la plantilla}
-Hay distintas formas de instalar todos los componentes necesarios, pero se recomienda seguir los pasos aquí dados usando un sistema operativo basado en Debian como Ubuntu:
-
-Una forma de instalar \LaTeX{} consiste en instalar la plantilla \emph{esi-tfg}, que proporciona una plantilla para el desarrollo del Trabajo Fin de Grado de la ESI, pero además instala todos los componentes necesarios para que \LaTeX{} funcione correctamente. Toda la documentación se encuentra en: \url{https://bitbucket.org/arco_group/esi-tfg}. Otra forma sería instalando \LaTeX{} directamente mediante:
-\begin{listing}[style=consola, numbers=none]
-$ sudo apt-get install texlive-full
-\end{listing} %$
-
-El siguiente paso sería instalar un editor de \LaTeX{}, recomendamos el uso de TeXstudio que puede obtenerse desde: \url{http://www.texstudio.org/}.
-
-El último paso sería instalar algunas dependencias necesarias para el funcionamiento de esta plantilla:
-\begin{listing}[style=consola, numbers=none]
-$ sudo apt-get install texlive-science
-\end{listing} %$
-
-
-% Sección: Ejemplos de tipografía y organización del documento
-\section{Ejemplos de tipografía y organización del documento}
-En esta sección se explica brevemente como usar algunas características básicas de \LaTeX como pueden ser \textbf{texto en negrita}, \emph{enfatizado}, \textit{cursiva}, \underline{subrayado}, \textsc{o versalitas}.
-
-\subsection{Subsecciones}
-Además se pueden crear distintas subsecciones y éstas a su vez incluir subsubsecciones:
-\subsubsection{Subsubsección 1}
-
-
-% Sección: Fórmulas en LaTeX
-\section{Fórmulas en \LaTeX{}}
-\LaTeX{} puede utilizarse para incorporar fórmulas matemáticas:
-$\sum_{n=1}^\infty\frac{1}{n^2}=\frac{\pi^2}{6}$
-
-Aunque también pueden expresarse así:
-\begin{equation} \label{eq:equation1}
-\sum_{n=1}^\infty\frac{1}{n^2}=\frac{\pi^2}{6}
-\end{equation}
-ó asi:
-\begin{equation*}
-\sum_{n=1}^\infty\frac{1}{n^2}=\frac{\pi^2}{6}
-\end{equation*}
-
-Y posteriormente hacer referencia a dicha ecuación: Ecuación (\ref{eq:equation1}).
-
-Se recomienda el uso de la herramienta Daumc Equation Editor (disponible en: \url{http://s1.daumcdn.net/editor/fp/service_nc/pencil/Pencil_chromestore.html}) para escribir ecuaciones en \LaTeX{} de manera trivial.
-
-
-% Sección: Ejemplo de códigos e imágenes
-\section{Ejemplo de códigos e imágenes}
-Podemos insertar comandos de consola de la siguiente forma:  \texttt{uname -a} , o mediante:
-\begin{listing}[style=consola, numbers=none]
-$ uname -a
-Linux droideka 4.4.0-66-generic #87-Ubuntu SMP Fri Mar 3 15:29:05 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
-\end{listing} %$
-
-También se pueden insertar códigos (listados) de la siguiente forma:
-\lstinputlisting[style=C,
-caption={Ejemplo de un listado de código},
-label={lst:HolaMundo},
-firstline=1]{code/hola_mundo.c}
-
-Podemos hacer referencia en cualquier momento a Listado \ref{lst:HolaMundo}
-
-Además de códigos, podemos insertar también pseudocódigos como se puede ver en Algoritmo \ref{alg:fox}. Para ello se utiliza el paquete algorithm2e.sty cuyo manual está disponible en: \url{http://osl.ugr.es/CTAN/macros/latex/contrib/algorithm2e/doc/algorithm2e.pdf}. Este paquete puede instalarse en cualquier distribución basada en Debian mediante el comando:
-\begin{listing}[style=consola, numbers=none]
-$ sudo apt-get install texlive-science
-\end{listing} %$
-
-\IncMargin{1em}
-\begin{algorithm}
-	\SetKwInOut{Input}{Datos}\SetKwInOut{Output}{Resultado}
-	\LinesNumbered
-	\SetAlgoLined
-
-	\Input{Matrices A y B, lado de la grilla de procesos (m), fila del proceso (i), columna del proceso (j)}
-	\Output{Matriz C}
-
-	\For{k = 0 to m-1}{
-		\eIf{j == ((i + k) mod m)}{
-			Broadcast $A_{ij}$ a los procesos de la misma fila (i)\;
-		}{
-			Receive $A_{ip}$ de los procesos de la misma fila\;
-		}
-		$C_{ij}$ += $A_{ip}$ * $B_{ij}$\;
-		\tcc{Mandar $B_{ij}$ al proceso de la fila superior y recibirlo del proceso de fila inferior}
-		Send $B_{ij}$ al proceso $t_{(i-1) j}$\;
-		Receive $B_{ij}$ del proceso $t_{(i+1) j}$\;
-	}
-
-	\caption{Algoritmo de Fox}\label{alg:fox}
-\end{algorithm}\DecMargin{1em}
-
-Para insertar imágenes (figuras) podemos usar los siguientes comandos, ya sea una imagen individual o dos subimágenes. También podemos hacer referencia a dichas imágenes: Figura \ref{fig:PlazaCR} o Figura \ref{fig:ESI1}.
-
-% Una imagen
-\begin{figure}[H] %H --> Obliga a que la imagen se coloque en el lugar exacto en el texto
-	\centering
-	\includegraphics[width=1\linewidth,angle=0]{PlazaCR}
-	\caption{Plaza de Ciudad Real}
-	\label{fig:PlazaCR}
+  }
+  \caption{Imágenes Red Toroide}
+  \label{fig:toroide}
 \end{figure}
 
-% Dos subimagenes
-\begin{figure}[htb]
-	\centering
-	\subfigure[Imagen de la fachada de la ESI]{
-		\includegraphics[width=7cm]{ESI2}
-		\label{fig:ESI1}
-	}
-	\subfigure[Imagen de la ESI]{
-		\includegraphics[width=7cm]{ESI1}
-		\label{fig:ESI2}
-	}
-	\caption{Imágenes que muestran la ESI}
-	\label{fig:ESI}
-\end{figure}
-
-Por último, para recrear la pulsación de un botón podemos usar: \tecla{Ctrl+C}
+\clearpage
 
 
-% Sección: Ejemplo de listados
-\section{Ejemplo de listados}
+\section{Planteamiento de la solución}
+Para solucionar el problema, se tiene en cuenta que una \textit{red Toroidal} tiene un valor de \textit{\textbf{lado L}}.
+Donde el \textit{número de procesos} \textbf{N} esta determinado por: \textbf{$L^{2}$}
 
-El primer ejemplo consiste en un listado normal:
+En este caso el valor de \textbf{L} es \textbf{3}, por lo tanto, el valor de \textbf{N} será \textbf{9}, esto quiere decir que este toroide estaŕa formado por 9 procesos (denominados en el código como \textit{ranks}).
+
+El número de lado \textbf{L} del toroide se encuentra definido en \textit{/include/definitions}, como:
+
+\textit{\textbf{define L 3}}
+
+Si se quiere realizar la simulación con un valor de lado distinto, se deberá cambiar el valor de esta constante. Además del número total de procesos a crear, pasado como argumento al comando de ejecución (\textit{mpirun}) en la línea de ordenes. Este valor se puede encontrar en el \textit{Makefile} del proyecto.
+
+Otra constante importante, es la que determina el tamaño del buffer lectura del fichero (en este caso \textit{datos.dat}), debido a que si se quiere leer una gran cantidad de números, y asi crear una gran cantidad de nodos (ranks), se debe de modificar su valor a uno mayor.
+
+\textit{\textbf{define MAX-SIZE 1024}}
+
+\subsection{Tipos de nodos}
+En este problema encontramos dos tipos de nodos: el \textbf{\textit{rank o nodo 0}} y los demás \textbf{\textit{nodos}}.
+
 \begin{itemize}
-	\item Item 1
-	\item Item 2
-	\item[\ding{108}] Se puede cambiar de icono usando ding. Consultar ChuLaTeX \cite{Salido2011}
-	\item[*] Item 4
+	\item \textbf{Rank 0}: Este nodo corresponde al primer proceso creado. Encargado de la lectura del fichero \textit{\textbf{datos.dat}}, el cual contiene los números que más tarde asignara el mismo a los demás nodos que forman la red toroidal.
+	
+	A la hora de realizar la asignación de los números a los respectivos nodos restantes (incluyendose el mismo), debe de comprobar que la cantidad de números obtenidos del fichero es igual al tamaño del toroide \textbf{N} (nº de nodos que lo forman) si esta comprobación es exitosa, continuara la ejecución normal del programa.
+	
+	En caso contrario, a mi elección bien sea por que el tamaño del toroide o la cantidad de los números sea menor o mayor. El \textit{rank 0} cero abortará la ejecución del programa. 
+	Tanto si la comprobación es correcta como si no, este difundirá el resultado a los demás nodos. Para ello se ha utilizado la función \textit{Bcast()} de la libreria de \textbf{MPI}.
+	
+	Una vez asignados los respectivos números a cada nodo, tras calcular el número mínimo de la red toroidal, \textit{rank 0} mostrara dicho número por pantalla, y el programa finalizará.
+	
+	\item \textbf{Los demás nodos}: Estos tipos de nodos recibirán del \textit{rank 0} la decisión de continuar o no. Si continua la ejecución normal se les asignará un número real, el cual trás obtener cada uno sus respectivos vecinos, se  llevará a cabo el algoritmo para obtener \textbf{el menor número de la red toroidal}.
 \end{itemize}
-
-El segundo de un listado numerado:
-\begin{enumerate}
-	\item Item 1
-	\item Item 2
-	\item Item 3
-	\item Item 4
-\end{enumerate}
-
-En este ejemplo vamos a mostrar el uso de un listado compacto:
-
-\begin{compactitem}
-	\item Item 1
-	\item Item 2
-	\item Item 3
-	\item Item 4
-\end{compactitem}
-
-
-% Sección: Tablas
-\section{Tablas}
-Es posible introducir tablas en \LaTeX{}. Aquí se puede ver un pequeño ejemplo:
-
-\begin{table}[htbp]
-	\begin{center}
-		\begin{tabular}{|l|l|}
-			\hline
-			Número de procesos & Tiempo (segundos) \\
-			\hline \hline
-			1 & 555,273043 \\ \hline
-			4 & 278,392832 \\ \hline
-			9 & 260,050554 \\ \hline
-			16 & 251,819869 \\ \hline
-			25 & 236,560818 \\ \hline
-		\end{tabular}
-		\caption{Resultado de la ejecución para matrices de orden N = 3600.}
-		\label{tabla:Tiempos3600}
-	\end{center}
-\end{table}
-
-
-% Sección: Referencias
-\section{Añadir referencias}
-Para el manejo de las referencias se recomienda la instalación de JabRef disponible en: \url{http://www.jabref.org/}. Mediante esta aplicación abrimos el archivo \emph{biblist.bib}. Mediante la aplicación introducimos las distintas referencias que queramos y a cada una le asignamos una bibtexkey que sea significativa para nosotros y no se repita.
-
-Por último podemos citar libros o artículos mediante el comando cite. \cite{Kottwitz2011} \cite{Martin2017} \cite{Salido2011}. En este comando ponemos la bibtexkey que indica la referencia que queremos introducir.
-
-
-% Sección: Mejoras y sugerencias
-\section{Mejoras y sugerencias}
-Puedes ayudar al desarrollo de esta plantilla aportando tus ideas, mejoras o sugerencias. Para ello puedes ponerte en contacto conmigo mediante la dirección de correo electrónico: \emph{joseangelmartinb@gmail.com}
 
 
 
