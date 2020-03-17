@@ -131,7 +131,7 @@ void get_neighbors(const int rank, int *neighbors)
     int row = rank / L;
     int column = rank % L;
 
-
+    /*Get North and South neighbors*/
     switch (row)
     {
     case 0:
@@ -150,6 +150,7 @@ void get_neighbors(const int rank, int *neighbors)
         break;
     }
 
+    /*Get West and East neighbors*/
     switch (column)
     {
     case 0:
