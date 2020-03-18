@@ -424,6 +424,8 @@ Esta función recoge como parámetros el vector \textit{data} y la variable ente
 
 \lstinputlisting[language=C]{code/add_numbers.c}
 
+Por último, se libera el espacio de memoria reservado para el vector de números \textit{data}.
+
 
 \subsection{Obtención de los vecinos (\textit{get-neighbors})}
 Esta función se encarga de que cada proceso, obtenga el rank de cada vecino, es decir, de sus vecinos \textit{Norte, Sur, Este y Oeste}. Para ello esta función recogerá como parámetros el rank del proceso que la ejecute, y su lista de vecinos vacía en este caso, representada mediante el vector de enteros llamado \textit{neighbors}.
@@ -443,20 +445,76 @@ Como se puede observar el proceso de obtención se debide en dos partes, la obte
 
 La implementación en ambás partes se ha realizado con un \textit{switch}, en el cual dependiendo de la posición del \textit{rank} se obtrendrá de una forma u otra los vecinos.
 
+
 \subsection{Cálculo del número mínimo (\textit{calculate-min})}
-El objetivo principal de esta función es la del cálculo del número mínimo de la red toroidal completa.
+El objetivo principal de esta función es la del cálculo del número mínimo de la red toroidal completa, en el cual todos los elementos de la red deben de contener finalmente el número mínimo.
+
+Para ello se explicará a continuaicón de una forma más práctica el procedimiento de este algoritmo, dado que en la sección 2.2.2 ya ha sido explicado de una forma más teoríca.
+
+Por tanto, una vez obtenidos los vecinos de cada nodo, se lleva a cabo el cálculo del mínimo. 
+La primera versión de este algoritmo estaba compuesta por dos bucles de tipo \textit{for}, en los cuales primero, se cálculaba los números de los vecinos correspondientes a las filas \textit{Norte y Sur}, enviando a \textit{Sur} el número que contiene el nodo actual y recibiendolo del \textit{Norte} su número. Y más tarde el mismo procedimiento con las columnas \textit{Este y Oeste}. Con cálcular me refiero a quedarse el nodo actual finalmente con el menor de cada número.
+Para que esto sea aplicable a los elementos de toda la fila o de toda la columna se harían 1 a L-1 iteracciones en cada bucle.
+
+Por lo que el procedimiento a seguir sería el siguiente:
+\begin{itemize}
+	\item \textbf{Primer bucle \textit{for}} (cálculo de las filas):
+	\begin{enumerate}
+		\item El \textit{rank} actual envía su número (\textit{my-number}) al vecino del \textit{Sur}.
+		\item El \textit{rank} actual recibe el número de su vecino del \textit{Norte} (\textit{his-number}).
+		\item Se realiza el cálculo del número mínimo entre estos dos número (se coge el menor de ellos).
+	\end{enumerate}
+	
+	\item \textbf{Segundo bucle \textit{for}} (cálculo de las columnas):
+	\begin{enumerate}
+		\item El \textit{rank} actual envía su número (\textit{my-number}) al vecino del \textit{Este}.
+		\item El \textit{rank} actual recibe el número de su vecino del \textit{Oeste} (\textit{his-number}).
+		\item Se realiza el cálculo del número mínimo entre estos dos número (se coge el menor de ellos).
+	\end{enumerate}
+\end{itemize}
+
+\lstinputlisting[language=C]{code/calculate-v1.c}
 
 
+Como se puede observar, una vez realizado ambos bucles, todos los elementos de la red tendrán almacenado el número mínimo.
 
 
+\subsubsection{Mejora del algoritmo}
+Una vez desarrollada la primera versión del algoritmo de cálcular el mínimo, se observo, que realmente se realizaría lo mismo dejando simplemente un bucle \textit{for}, y además esto podría mejorar el rendmiento del programa.
 
+El procedimiento de esta versión mejorada, es mas peculiar, debido a que no se calculan de forma secuencial, todos los vecinos de las filas (\textit{Norte-Sur}) y después los de las columnas \textit{Este-Oeste}, si no que cada nodo en una misma interacción calculará ambas opciones. El procedimiento a seguir sera el siguiente:
 
+\textbf{En un único bucle \textit{for}}:
+\begin{enumerate}
+	\item El \textit{rank} actual envía su número (\textit{my-number}) al vecino del \textit{Sur}.
+	\item El \textit{rank} actual recibe el número de su vecino del \textit{Norte} (\textit{his-number}).
+	\item Se realiza el cálculo del número mínimo entre estos dos número, obtenidos de las filas (se coge el menor de ellos).
+	\item El \textit{rank} actual envía su número (\textit{my-number}) al vecino del \textit{Este}.
+	\item El \textit{rank} actual recibe el número de su vecino del \textit{Oeste} (\textit{his-number}).
+	\item Se realiza el cálculo del número mínimo entre estos dos número, obtenidos de las columnas (se coge el menor de ellos).
+\end{enumerate}
 
+\lstinputlisting[language=C]{code/calculate_min.c}
 
+Por último en ambas opciones, se libera el espacio de memoria reservado para el vector de los vecinos \textit{neighbors}.
+\\
 
+Un ejemplo de representación del estado de la matriz, en un inicio y al final, tras haber calculado el mínimo, seria el siguiente:
 
+\begin{figure}[H]
+  \centering
+  \subfigure{
+    \includegraphics[width=38mm]{matriz-ini.png}
+  }
+  \subfigure{
+  \includegraphics[width=22mm]{matriz-fin.png}
+  }
+  \caption{Representación red toroidal al inicio y al final}
+  \label{fig:toroide}
+\end{figure}
 
+\clearpage
 
+ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% 						BIBLIOGRAFIA 						   %%%%%%%%%
