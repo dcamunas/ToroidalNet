@@ -47,7 +47,6 @@ int main(int argc, char *argv[])
     if (finish != TRUE)
     {
         MPI_Recv(&number, 1, MPI_LONG_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
-        printf("[X] RANK[%d] --> %.2Lf\n", rank, number);
 
         get_neighbors(rank, neighbors);
 
@@ -120,6 +119,9 @@ void add_numbers(long double *data, const int size)
     {
         number = data[i];
         MPI_Send(&number, 1, MPI_LONG_DOUBLE, i, SEND_TAG, MPI_COMM_WORLD);
+
+        /*Print number send to rank i*/
+        printf("[X] RANK[%d] --> %.2Lf\n", i, number);
     }
 
     free(data);
@@ -130,6 +132,14 @@ void get_neighbors(const int rank, int *neighbors)
 {
     int row = rank / L;
     int column = rank % L;
+
+    /* 
+    1 -- 8 -- 2          
+    |    |    | 
+    3 -- 6 -- 5 
+    |    |    |
+    7 -- 0 -- 9
+    */
 
     /*Get North and South neighbors*/
     switch (row)
@@ -176,6 +186,14 @@ long double calculate_min(const int rank, long double my_number, int *neighbors)
     int i;
     long double his_number;
 
+    /* Init state
+    1 -- 8 -- 2          
+    |    |    | 
+    3 -- 6 -- 5 
+    |    |    |
+    7 -- 0 -- 9
+    */
+
     for (i = 1; i < L; i++)
     {
         /* Calculate rows */
@@ -188,6 +206,14 @@ long double calculate_min(const int rank, long double my_number, int *neighbors)
         MPI_Recv(&his_number, 1, MPI_LONG_DOUBLE, neighbors[WEST], MPI_ANY_TAG, MPI_COMM_WORLD, NULL);
         my_number = (his_number > my_number ? my_number : his_number);
     }
+    
+    /*
+    0 -- 0 -- 0          
+    |    |    | 
+    0 -- 0 -- 0 
+    |    |    |
+    0 -- 0 -- 0
+    */
 
     free(neighbors);
 

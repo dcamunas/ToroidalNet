@@ -409,7 +409,7 @@ Una vez cargados los datos en el vector \textit{data}, la función devolverá la
 
 \subsection{Comprobación de la cantidad de números (\textit{check-size})}
 Esta función se encarga de comprobar si la cantidad de números (\textit{numbers-n}) es igual al tamaño (\textit{size}) del toroide. Estos son los argumentos que se les pasa a la función.
-La función devolverá True o False si es igual o no estas variables, si la devolución es False, entonces finalizará la ejecución normal del programa. Y el proceso \textit{rank 0}, mandará una difusión a los demás procesos, para que asi aborten su ejecución. Esto se realiza con la primitiva \textit{MPI-Bcast()}. 
+La función devolverá True o False si es igual o no estas variables, si la devolución es False, entonces finalizará la ejecución normal del programa. Y el proceso \textit{rank 0}, mandará una difusión a los demás procesos, para que asi aborten su ejecución. Esto se realiza con la primitiva \textit{MPI-Bcast()} \citep{mpi_bcast}. 
 
 \lstinputlisting[language=C]{code/bdcast.c}
 
@@ -514,7 +514,7 @@ Un ejemplo de representación del estado de la matriz, en un inicio y al final, 
 
 \clearpage
 
- 
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% 						BIBLIOGRAFIA 						   %%%%%%%%%
@@ -522,6 +522,7 @@ Un ejemplo de representación del estado de la matriz, en un inicio y al final, 
 \newpage
 \bibliography{biblist}
 \bibliographystyle{plain}
+
 %\nocite{*} Permite citar todas las referencias en el archivo .bib
 
 % Añadir la bibliografía al Índice de contenidos

@@ -1,5 +1,5 @@
 /* CONSTANTS */
-#define L               4
+#define L               3
 #define NEIGHBORS_N     4
 
 #define SEND_TAG        0

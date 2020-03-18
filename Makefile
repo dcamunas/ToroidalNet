@@ -18,7 +18,7 @@ toridalNet:
 	$(CC) $(DIRSRC)toroidalNet.c $(CFLAGS) $(LDLIBS) -o $(DIREXE)toroidalNet
 
 solution:
-	$(RUN) -n 16 ./$(DIREXE)toroidalNet 
+	$(RUN) -n 9 ./$(DIREXE)toroidalNet 
 
 clean : 
 	rm -rf *~ core $(DIROBJ) $(DIREXE) $(DIRHEA)*~ $(DIRSRC)*~ 
