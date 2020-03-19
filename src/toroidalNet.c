@@ -8,7 +8,7 @@
 FILE *open_file(const char *path, const char *mode);
 int load_data(long double *data);
 int check_size(const int size, const int numbers_n);
-void add_numbers(long double *data, const int size);
+void send_numbers(long double *data, const int size);
 void get_neighbors(const int rank, int *neighbors);
 long double calculate_min(const int rank, long double my_number, int *neighbors);
 void print_min_number(const int rank, long double min_number);
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
         if (finish != TRUE)
         {
-            add_numbers(data, size);
+            send_numbers(data, size);
         }
     }
 
@@ -109,8 +109,8 @@ int check_size(const int size, const int numbers_n)
     return finish;
 }
 
-/* Add number to nodes (ranks) */
-void add_numbers(long double *data, const int size)
+/* Send number to nodes (ranks) */
+void send_numbers(long double *data, const int size)
 {
     int i;
     long double number;
@@ -207,7 +207,7 @@ long double calculate_min(const int rank, long double my_number, int *neighbors)
         my_number = (his_number > my_number ? my_number : his_number);
     }
     
-    /*
+    /* Final state
     0 -- 0 -- 0          
     |    |    | 
     0 -- 0 -- 0 
@@ -220,7 +220,7 @@ long double calculate_min(const int rank, long double my_number, int *neighbors)
     return my_number;
 }
 
-/*Print the minium value by First Rank (Rank == 0)*/
+/*Print the minium value by Rank 0*/
 void print_min_number(const int rank, long double min_number)
 {
     if (rank == FIRST_RANK)

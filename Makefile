@@ -9,12 +9,12 @@ LDLIBS := -lm
 CC := mpicc
 RUN := mpirun
 
-all : dirs toroidalNet
+all : dirs toroidalNet solution
 
 dirs:
 	mkdir -p $(DIREXE)
 
-toridalNet:
+toroidalNet:
 	$(CC) $(DIRSRC)toroidalNet.c $(CFLAGS) $(LDLIBS) -o $(DIREXE)toroidalNet
 
 solution:
